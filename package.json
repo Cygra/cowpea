@@ -1,0 +1,34 @@
+{
+  "name": "cowpea",
+  "version": "0.1.0",
+  "description": "Copy files in a chain",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cygra/cowpea.git"
+  },
+  "keywords": [
+    "copy",
+    "file system",
+    "fs",
+    "file"
+  ],
+  "author": "Cygra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cygra/cowpea/issues"
+  },
+  "homepage": "https://github.com/Cygra/cowpea#readme",
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "@types/node": "^14.14.24"
+  }
+}
