@@ -2,8 +2,13 @@ import * as fs from 'fs'
 import { suffixSlash } from './utils'
 
 class Cowpea {
-  private fromDir: string = ''
-  private toDir: string = ''
+  private fromDir: string = './'
+  private toDir: string = './'
+
+  private onCopy = (from: string, to: string) => {
+    fs.copyFileSync(from, to)
+    console.log(`COPY ${from} -> ${to} OK`)
+  }
 
   public from = (fromDir: string): Cowpea => {
     this.fromDir = suffixSlash(fromDir)
@@ -17,10 +22,20 @@ class Cowpea {
   }
 
   public copy = (src: string, dest?: string): Cowpea => {
-    const from = `${this.fromDir}${src}`
-    const to = `${this.toDir}${dest || src}`
-    fs.copyFileSync(from, to)
-    console.log(`COPY ${from} -> ${to} OK`)
+    this.onCopy(`${this.fromDir}${src}`, `${this.toDir}${dest || src}`)
+    return this
+  }
+
+  public copyDirectory = (filter?: (fileName: string) => string | null): Cowpea => {
+    fs.readdirSync(this.fromDir).forEach((file: string) => {
+      const from = `${this.fromDir}${file}`
+      const dest = filter ? filter(file) : file
+      if (dest) {
+        this.onCopy(from, `${this.toDir}${dest}`)
+      } else {
+        console.log(`${from} SKIPPED`)
+      }
+    })
     return this
   }
 }
