@@ -1,5 +1,5 @@
 {
-  "name": "cowpea",
+  "name": "@cygraw/cowpea",
   "version": "0.1.0",
   "description": "Copy files in a chain",
   "main": "lib/index.js",
