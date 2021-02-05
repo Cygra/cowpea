@@ -5,8 +5,12 @@ class Cowpea {
   private fromDir: string = './'
   private toDir: string = './'
 
-  private onCopy = (from: string, to: string) => {
-    fs.copyFileSync(from, to)
+  private onCopy = (from: string, to: string, processor?: (content: string) => string) => {
+    if (processor) {
+      fs.writeFileSync(to, processor(fs.readFileSync(from, 'utf-8')))
+    } else {
+      fs.copyFileSync(from, to)
+    }
     console.log(`COPY ${from} -> ${to} OK`)
   }
 
@@ -21,17 +25,26 @@ class Cowpea {
     return this
   }
 
-  public copy = (src: string, dest?: string): Cowpea => {
-    this.onCopy(`${this.fromDir}${src}`, `${this.toDir}${dest || src}`)
+  public copy = (
+    src: string,
+    options?: {
+      dest?: string
+      processor?: (content: string) => string
+    },
+  ): Cowpea => {
+    this.onCopy(`${this.fromDir}${src}`, `${this.toDir}${options?.dest ?? src}`, options?.processor)
     return this
   }
 
-  public copyDirectory = (filter?: (fileName: string) => string | null): Cowpea => {
+  public copyDirectory = (options?: {
+    filter?: (fileName: string) => string | null
+    processor?: (content: string) => string
+  }): Cowpea => {
     fs.readdirSync(this.fromDir).forEach((file: string) => {
       const from = `${this.fromDir}${file}`
-      const dest = filter ? filter(file) : file
+      const dest = options?.filter ? options?.filter(file) : file
       if (dest) {
-        this.onCopy(from, `${this.toDir}${dest}`)
+        this.onCopy(from, `${this.toDir}${dest}`, options?.processor)
       } else {
         console.log(`${from} SKIPPED`)
       }
