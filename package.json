@@ -1,6 +1,6 @@
 {
   "name": "@cygraw/cowpea",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Copy files in a chain",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
